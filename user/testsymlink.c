@@ -7,8 +7,13 @@ static void die(const char *m){ printf(1, "FAIL: %s\n", m); exit(); }
 static void ok(const char *m){ printf(1, "PASS: %s\n", m); }
 
 int main(void){
-  int fd;
+  int fd, n;
   char buf[64];
+
+  unlink("tgt");
+  unlink("lnk");
+  unlink("a");
+  unlink("b");
 
   fd = open("tgt", O_CREATE | O_WRONLY);
   if(fd < 0) die("open tgt create");
@@ -20,7 +25,7 @@ int main(void){
 
   fd = open("lnk", O_RDONLY);
   if(fd < 0) die("open lnk");
-  int n = read(fd, buf, sizeof(buf)-1);
+  n = read(fd, buf, sizeof(buf)-1);
   if(n < 0) die("read lnk");
   buf[n] = 0;
   close(fd);
